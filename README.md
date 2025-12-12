@@ -1,5 +1,3 @@
-# Bito_Task
-# Bito_Task
 🚀 How to Run Tests (Playwright + Pytest)
 1️⃣ Create virtual environment
 python3 -m venv .venv
