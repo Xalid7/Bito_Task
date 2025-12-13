@@ -21,17 +21,23 @@ class LoginScreen(BaseScreen):
             ("xpath", "//p[@class='css-1fz6f5n']"),
             ("xpath", "//div[contains(@class,'Mui-error')]/p"),
             ("xpath", "//div[@role='status' and text()='Please pay attention to the filled information']")
-
         ]
 
         for locator in locators:
             try:
-                if self.is_element_visible(locator):
-                    return self.get_element(locator).text_content().strip()
-            except:
-                pass
-        return ""
+                element = self.get_element(locator)
 
+                # WARNING: locator.is_visible() is SLOW (default timeout = 30 sec)
+                # FIX: we call is_visible(timeout=700) to avoid blocking
+                if element.is_visible(timeout=700):
+                    text = element.text_content(timeout=700)
+                    if text:
+                        return text.strip()
+            except Exception:
+                # ignore locator errors & continue loop
+                continue
+
+        return ""
 
     @allure.step("Check if Login page is open")
     def is_authorization_page_open(self):
